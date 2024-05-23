@@ -1,0 +1,7 @@
+credentials/*
+.env
+*.env
+__pycache__/
+dump-db
+venv
+zip-db
