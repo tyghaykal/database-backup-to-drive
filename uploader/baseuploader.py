@@ -31,7 +31,7 @@ class BaseUploader:
         print("Clean up data on local")
         try:
             db_dir = os.path.join(base_backup_dir, db_name)
-            files = sorted([f for f in os.listdir(db_dir) if f.endswith('.zip')], key=lambda x: os.path.getctime(os.path.join(db_dir, x)), reverse=True)
+            files = sorted([f for f in os.listdir(db_dir) if f.endswith('.gz')], key=lambda x: os.path.getctime(os.path.join(db_dir, x)), reverse=True)
             for f in files[self.retention_count:]:
                 os.remove(os.path.join(db_dir, f))
                 print(f"Deleted old local backup: {f}")
