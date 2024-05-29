@@ -1,24 +1,28 @@
 import os
-import zipfile
+import gzip
 from datetime import datetime
 
 class BaseUploader:
     def __init__(self, retention_count):
         self.retention_count = retention_count
 
-    def zip_file(self, dump_file, db_name, base_backup_dir="zip-db"):
+    def zip_file(self, dump_file, db_name, base_backup_dir="zip-db", compression_level=6):
         print("Start zipping dumped database file")
+        if dump_file is None or not os.path.exists(dump_file):
+            raise ValueError("The dump file does not exist or is not specified.")
+        
         db_dir = os.path.join(base_backup_dir, db_name)
         if not os.path.exists(db_dir):
             os.makedirs(db_dir)
         timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 
-        zip_file = os.path.join(db_dir, f"{db_name}_{timestamp}.zip")
+        compressed_file = os.path.join(db_dir, f"{db_name}_{timestamp}.zip")
         try:
-            with zipfile.ZipFile(zip_file, 'w') as zf:
-                zf.write(dump_file, os.path.basename(dump_file))
-            print(f"Database dump compressed: {zip_file}")
-            return zip_file
+            with open(dump_file, 'rb') as f_in:
+                with gzip.open(compressed_file, 'wb', compresslevel=compression_level) as f_out:
+                    f_out.writelines(f_in)
+            print(f"Database dump compressed: {compressed_file}")
+            return compressed_file
         except Exception as e:
             raise Exception(f"Error compressing file: {e}")
             return None

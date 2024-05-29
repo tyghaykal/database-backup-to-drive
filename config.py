@@ -33,5 +33,6 @@ class Config:
             'directory' : os.getenv('S3_DIRECTORY')
         }
         self.backup_retention_count = int(os.getenv('BACKUP_RETENTION_COUNT', 5))
+        self.compression_level = int(os.getenv('COMPRESSION_LEVEL', 6))
 
         print("Environment variables are loaded")

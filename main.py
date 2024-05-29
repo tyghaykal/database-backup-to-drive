@@ -22,7 +22,7 @@ def main():
                 print("Invalid disk type specified in .env. Exiting.")
                 return
 
-            zip_file_path = uploader.zip_file(dump_file, config.db_config['database'], config.local_directory)
+            zip_file_path = uploader.zip_file(dump_file, config.db_config['database'], config.local_directory, config.compression_level)
             if zip_file_path:
                 if config.drive_type == 'google-drive':
                     uploader.upload_to_drive(zip_file_path)
