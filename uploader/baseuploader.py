@@ -16,7 +16,7 @@ class BaseUploader:
             os.makedirs(db_dir)
         timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 
-        compressed_file = os.path.join(db_dir, f"{db_name}_{timestamp}.zip")
+        compressed_file = os.path.join(db_dir, f"{db_name}_{timestamp}.gz")
         try:
             with open(dump_file, 'rb') as f_in:
                 with gzip.open(compressed_file, 'wb', compresslevel=compression_level) as f_out:
