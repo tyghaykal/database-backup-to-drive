@@ -1,5 +1,6 @@
 import os
 import gzip
+import shutil
 from datetime import datetime
 
 class BaseUploader:
@@ -11,16 +12,17 @@ class BaseUploader:
         if dump_file is None or not os.path.exists(dump_file):
             raise ValueError("The dump file does not exist or is not specified.")
         
-        db_dir = os.path.join(base_backup_dir, db_name)
-        if not os.path.exists(db_dir):
-            os.makedirs(db_dir)
-        timestamp = datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+        #creating backup dir if not exist
+        compressed_dir = os.path.join(base_backup_dir, db_name)
+        if not os.path.exists(compressed_dir):
+            os.makedirs(compressed_dir)
+        dump_filename = os.path.basename(dump_file)
+        compressed_file = os.path.join(compressed_dir, f"{dump_filename}.gz")
 
-        compressed_file = os.path.join(db_dir, f"{db_name}_{timestamp}.gz")
         try:
             with open(dump_file, 'rb') as f_in:
                 with gzip.open(compressed_file, 'wb', compresslevel=compression_level) as f_out:
-                    f_out.writelines(f_in)
+                    shutil.copyfileobj(f_in, f_out)
             print(f"Database dump compressed: {compressed_file}")
             return compressed_file
         except Exception as e:

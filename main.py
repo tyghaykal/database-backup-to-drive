@@ -4,10 +4,12 @@ from database import DatabaseDumper
 from uploader.googledrive import GoogleDriveUploader
 from uploader.s3 import S3Uploader
 from uploader.local import LocalSaver
+from datetime import datetime
 
 def main():
     try:
         config = Config()
+        
 
         db_dumper = DatabaseDumper(config.db_config)
         dump_file = db_dumper.dump_database()
@@ -23,6 +25,7 @@ def main():
                 return
 
             zip_file_path = uploader.zip_file(dump_file, config.db_config['database'], config.local_directory, config.compression_level)
+            
             if zip_file_path:
                 if config.drive_type == 'google-drive':
                     uploader.upload_to_drive(zip_file_path)
