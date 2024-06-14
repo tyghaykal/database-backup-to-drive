@@ -14,7 +14,6 @@ class DatabaseDumper:
 
     def create_connection(self):
         connection = None
-        print(self.config_db['port'])
         try:
             connection = mysql.connector.connect(
                 host=self.config_db['host'],
