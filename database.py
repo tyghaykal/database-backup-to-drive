@@ -60,7 +60,7 @@ class DatabaseDumper:
             charset = self.get_database_character_set(connection)
 
             dump_command = (
-                f"mysqldump --column-statistics=0 -R -E --default-character-set={charset} "
+                f"mysqldump --column-statistics=0 --single-transaction -R -E --default-character-set={charset} "
                 f"--force --opt "
                 f"-u {self.config_db['user']} "
                 f"-p{self.config_db['password']} "
