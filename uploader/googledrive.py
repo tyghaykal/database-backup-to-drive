@@ -6,10 +6,10 @@ from googleapiclient.http import MediaFileUpload
 from google.oauth2.service_account import Credentials
 
 class GoogleDriveUploader(BaseUploader):
-    def __init__(self, credentials_path, folder_id, retention_count):
-        super().__init__(retention_count)
-        self.credentials_path = credentials_path
-        self.folder_id = folder_id
+    def __init__(self, config):
+        super().__init__(config.backup_retention_count)
+        self.credentials_path = config.google['credential_path']
+        self.folder_id = config.google['drive_folder_id']
         self.service = self.authenticate()
 
     def authenticate(self):
